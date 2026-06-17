@@ -64,13 +64,13 @@ h1 {
 .birth-inputs {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 .birth-num {
-  width: 100%;
+  flex: 1 1 0; /* 셋 다 flex-basis 0 → grow 비율대로 폭 배분 */
   min-width: 0;
-  padding: 14px 8px;
-  font-size: 1.1rem; /* 16px 이상 → 모바일 자동 확대 방지 */
+  padding: 15px 6px;
+  font-size: 1.2rem; /* 16px 이상 → 모바일 자동 확대 방지 */
   text-align: center;
   border: 1px solid #463a6e;
   border-radius: 12px;
@@ -78,16 +78,20 @@ h1 {
   color: var(--text);
 }
 .birth-num-year {
-  flex: 1.6; /* 연도 칸을 조금 더 넓게 */
+  flex-grow: 2.4; /* 연도(YYYY) 칸을 가장 넓게 */
+}
+.birth-num::placeholder {
+  color: #6f6593;
+  letter-spacing: 1px;
+}
+.birth-sep {
+  flex: none;
+  font-size: 0.85rem;
+  color: var(--muted);
 }
 .birth-num:focus {
   outline: none;
   border-color: var(--accent);
-}
-.birth-sep {
-  flex: none;
-  font-size: 0.9rem;
-  color: var(--muted);
 }
 
 .primary-btn {

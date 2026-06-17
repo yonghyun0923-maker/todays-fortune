@@ -732,19 +732,95 @@ function renderTwinsFallback(box, birth) {
   }
 }
 
+// ── 시세 조회 유틸 ────────────────────────────────────
+// Yahoo Finance 차트 API는 CORS를 막아 브라우저에서 직접 못 부른다.
+// 공개 CORS 프록시(allorigins)를 거쳐 가져오고, 느리거나 실패하면 링크로 대체.
+async function fetchQuote(yahooSymbol) {
+  const y = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+    yahooSymbol
+  )}?interval=1d&range=1d`;
+  const proxied = `https://api.allorigins.win/raw?url=${encodeURIComponent(y)}`;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 10000); // 10초 넘으면 포기
+  try {
+    const res = await fetch(proxied, { signal: ctrl.signal });
+    if (!res.ok) return null;
+    const d = await res.json();
+    const meta =
+      d && d.chart && d.chart.result && d.chart.result[0] && d.chart.result[0].meta;
+    if (!meta || typeof meta.regularMarketPrice !== "number") return null;
+    return { price: meta.regularMarketPrice, prev: meta.chartPreviousClose };
+  } catch (e) {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function fmtKRW(n) {
+  return Math.round(n).toLocaleString("ko-KR") + "원";
+}
+function fmtUSD(n) {
+  return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+// 전일 대비 등락률 (한국식 색: 상승 빨강 / 하락 파랑)
+function changeHTML(price, prev) {
+  if (typeof prev !== "number" || !prev) return "";
+  const pct = ((price - prev) / prev) * 100;
+  const flat = Math.abs(pct) < 0.005;
+  const up = pct > 0;
+  const arrow = flat ? "–" : up ? "▲" : "▼";
+  const cls = flat ? "flat" : up ? "up" : "down";
+  const sign = up ? "+" : ""; // 하락은 pct에 이미 - 포함
+  return `<span class="chg ${cls}">${arrow} ${sign}${pct.toFixed(2)}%</span>`;
+}
+
+// 시세를 비동기로 채운다(자리표시 → 결과/대체).
+async function fillQuote(slotId, yahooSymbol, currency) {
+  const el = document.getElementById("price-" + slotId);
+  if (!el) return;
+  const q = await fetchQuote(yahooSymbol);
+  if (!q) {
+    el.innerHTML = `<span class="muted">시세 불러오기 실패</span>`;
+    return;
+  }
+  const priceStr = currency === "KRW" ? fmtKRW(q.price) : fmtUSD(q.price);
+  el.innerHTML = `${priceStr} ${changeHTML(q.price, q.prev)}`;
+}
+
 // 오늘의 행운 종목(한국·미국 1개씩) — 재미 요소, 투자 권유 아님.
+// 이름·코드는 즉시 표시하고, 현재가는 비동기로 채운다. 실패해도 '현재가 보기' 링크 제공.
 function renderStocks(birth) {
   const kr = pick(KR_STOCKS, birth, "krstock");
   const us = pick(US_STOCKS, birth, "usstock");
+  const krLink = `https://finance.naver.com/item/main.naver?code=${kr.code}`;
+  const usSymbol = us.code.replace(".", "-"); // 야후 표기: BRK.B → BRK-B
+  const usLink = `https://finance.yahoo.com/quote/${usSymbol}`;
+
+  const row = (flag, s, link, slotId) => `
+    <li class="stock-row">
+      <div class="stk-head">
+        <span class="flag">${flag}</span>
+        <strong>${esc(s.name)}</strong>
+        <span class="stk-price" id="price-${slotId}"><span class="muted">시세…</span></span>
+      </div>
+      <div class="stk-sub">
+        <span class="ticker"><b>${esc(s.code)}</b> · ${esc(s.market)}</span>
+        <a class="stk-link" href="${link}" target="_blank" rel="noopener noreferrer">현재가 ↗</a>
+      </div>
+    </li>`;
+
   $("stocks").innerHTML =
     `<p class="stocks-title">📈 오늘의 행운 종목 <span class="stocks-note">재미로!</span></p>` +
     `<ul class="stock-list">` +
-    `<li><span class="flag">🇰🇷</span><strong>${esc(kr.name)}</strong>` +
-      `<span class="ticker"><b>${esc(kr.code)}</b> · ${esc(kr.market)}</span></li>` +
-    `<li><span class="flag">🇺🇸</span><strong>${esc(us.name)}</strong>` +
-      `<span class="ticker"><b>${esc(us.code)}</b> · ${esc(us.market)}</span></li>` +
+    row("🇰🇷", kr, krLink, "kr") +
+    row("🇺🇸", us, usLink, "us") +
     `</ul>` +
-    `<p class="stocks-disc">※ 운세를 바탕으로 한 재미 요소예요. 투자 권유나 추천이 아니며, 투자 판단·책임은 본인에게 있습니다.</p>`;
+    `<p class="stocks-disc">※ 현재가는 약간 지연될 수 있고 참고용입니다. 운세 기반 재미 요소이며 투자 권유·추천이 아니고, 투자 판단·책임은 본인에게 있습니다.</p>`;
+
+  // 현재가 비동기 조회 (모두 KOSPI → 코드+.KS)
+  fillQuote("kr", `${kr.code}.KS`, "KRW");
+  fillQuote("us", usSymbol, "USD");
 }
 
 function showResult(birth) {

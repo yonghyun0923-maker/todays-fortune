@@ -262,31 +262,68 @@ h1 {
   flex-direction: column;
   gap: 8px;
 }
-.stock-list li {
+.stock-row {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 5px;
   background: #2a2147;
   border-radius: 10px;
   padding: 10px 12px;
 }
-.stock-list .flag {
+.stk-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stk-head .flag {
   font-size: 1rem;
 }
-.stock-list strong {
+.stk-head strong {
   flex: 1;
   font-size: 0.98rem;
 }
-.stock-list .ticker {
-  font-size: 0.8rem;
-  color: var(--muted);
+.stk-price {
+  font-size: 0.95rem;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.stock-list .ticker b {
+.stk-price .muted {
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.chg {
+  font-size: 0.78rem;
+  margin-left: 2px;
+}
+.chg.up { color: #ff6b6b; }   /* 상승 = 빨강(한국식) */
+.chg.down { color: #5aa9ff; } /* 하락 = 파랑 */
+.chg.flat { color: var(--muted); }
+.stk-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.stk-sub .ticker {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.stk-sub .ticker b {
   color: var(--text);
   font-weight: 700;
   letter-spacing: 0.3px;
+}
+.stk-link {
+  font-size: 0.78rem;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.stk-link:hover {
+  text-decoration: underline;
 }
 .stocks-disc {
   margin-top: 10px;

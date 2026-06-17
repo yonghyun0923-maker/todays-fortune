@@ -1,0 +1,297 @@
+/* 전체 기본값 — 깔끔하고 차분한 톤 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #1b1530;
+  --card: #2a2147;
+  --accent: #ffd36e;
+  --text: #f4f1fb;
+  --muted: #b3a9d4;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: "Segoe UI", "Malgun Gothic", system-ui, sans-serif;
+  /* 은은한 그라데이션 배경 — 화면이 그럴듯해 보이도록 */
+  background: radial-gradient(circle at 30% 20%, #3a2c63, var(--bg) 70%);
+  color: var(--text);
+}
+
+/* 카드: PC 기준 적당한 폭, 폰에서는 width:100%로 자연스럽게 줄어듦 */
+.card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 36px 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+
+h1 {
+  font-size: 1.7rem;
+  letter-spacing: 0.5px;
+}
+
+.today {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lead {
+  margin: 26px 0 18px;
+  color: var(--muted);
+}
+
+.label {
+  display: block;
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.birth-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  border: 1px solid #463a6e;
+  border-radius: 12px;
+  background: #20193a;
+  color: var(--text);
+}
+
+.primary-btn {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #2a2147;
+  cursor: pointer;
+  transition: transform 0.08s ease, filter 0.15s ease;
+}
+.primary-btn:hover {
+  filter: brightness(1.05);
+}
+.primary-btn:active {
+  transform: scale(0.98);
+}
+
+.hint {
+  margin-top: 12px;
+  min-height: 1.1em;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+/* 결과 화면 */
+.score-wrap {
+  margin-bottom: 16px;
+}
+.score-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.score {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.score {
+  /* 결과가 뜰 때 점수가 살짝 커지며 등장 */
+  display: inline-block;
+  animation: pop 0.5s ease;
+}
+@keyframes pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.fortune {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  margin: 8px 0 16px;
+  word-break: keep-all;
+}
+
+/* 오늘의 키워드 칩 */
+.keyword-wrap {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.keyword {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 211, 110, 0.15);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* 분야별 운세 카드 */
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 4px 0 22px;
+  text-align: left;
+}
+.cat {
+  background: #20193a;
+  border-radius: 12px;
+  padding: 12px 14px;
+  /* 카드가 아래에서 떠오르듯 순차 등장 (--i = 카드 순번) */
+  opacity: 0;
+  animation: rise 0.45s ease forwards;
+  animation-delay: calc(var(--i) * 0.09s);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.cat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.cat-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.cat-stars {
+  font-size: 0.95rem;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.cat-line {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted);
+  word-break: keep-all;
+}
+
+.lucky {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2×2 격자 */
+  gap: 10px;
+}
+.lucky li {
+  background: #20193a;
+  border-radius: 12px;
+  padding: 12px;
+}
+.lucky span {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.lucky strong {
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+/* 조심할 점 — 살짝 경고 톤으로 구분 */
+.caution {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 211, 110, 0.08);
+  border: 1px solid rgba(255, 211, 110, 0.25);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text);
+  text-align: left;
+  word-break: keep-all;
+}
+.caution::before {
+  content: "⚠️ 조심할 점 — ";
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* 나와 생일이 같은 유명인 */
+.twins {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #20193a;
+  text-align: left;
+}
+.twins-title {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.twin-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.twin {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255, 211, 110, 0.12);
+  color: var(--text);
+  font-size: 0.85rem;
+  word-break: keep-all;
+}
+.twins-empty {
+  font-size: 0.85rem;
+  color: var(--muted);
+  word-break: keep-all;
+}
+.twins-src {
+  margin-top: 10px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+.ghost-btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 0.95rem;
+  border: 1px solid #463a6e;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+.ghost-btn:hover {
+  background: #20193a;
+}
+
+.foot {
+  margin-top: 28px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}

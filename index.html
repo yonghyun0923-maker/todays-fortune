@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <!-- 폰에서도 안 깨지게 반응형 기준점 설정 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>오늘의 운세</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>오늘의 운세</h1>
+    <p class="today" id="today"></p>
+
+    <!-- 입력 화면 -->
+    <section id="input-view">
+      <p class="lead">생년월일을 넣으면 오늘의 운세를 봐드려요.</p>
+      <label for="birth" class="label">생년월일</label>
+      <input type="date" id="birth" class="birth-input" />
+      <button id="see-btn" class="primary-btn">운세 보기</button>
+      <p class="hint" id="hint"></p>
+    </section>
+
+    <!-- 결과 화면 (처음엔 숨김) -->
+    <section id="result-view" hidden>
+      <div class="score-wrap">
+        <span class="score-label">오늘의 총운 점수</span>
+        <span class="score" id="score">0</span>
+      </div>
+      <p class="fortune" id="fortune"></p>
+
+      <!-- 오늘의 키워드 -->
+      <p class="keyword-wrap">오늘의 키워드 <span class="keyword" id="keyword"></span></p>
+
+      <!-- 분야별 운세 카드 (script.js가 채워 넣음) -->
+      <div class="categories" id="categories"></div>
+
+      <ul class="lucky">
+        <li><span>행운의 숫자</span><strong id="lucky-num"></strong></li>
+        <li><span>행운의 색</span><strong id="lucky-color"></strong></li>
+        <li><span>행운의 시간대</span><strong id="lucky-time"></strong></li>
+        <li><span>행운의 아이템</span><strong id="lucky-item"></strong></li>
+      </ul>
+
+      <!-- 조심할 점 -->
+      <p class="caution" id="caution"></p>
+
+      <!-- 나와 생일이 같은 유명인 (script.js가 채워 넣음) -->
+      <div class="twins" id="twins"></div>
+
+      <div class="actions">
+        <button id="copy-btn" class="ghost-btn">링크 복사</button>
+        <button id="again-btn" class="ghost-btn">다시 보기</button>
+      </div>
+      <p class="hint" id="copy-hint"></p>
+    </section>
+
+    <footer class="foot">광고 없이, 깔끔하게.</footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

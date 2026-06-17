@@ -337,59 +337,61 @@ const CAUTIONS = [
 
 // ── 오늘의 행운 종목 (재미 요소) ──────────────────────
 // ⚠️ 투자 권유/추천이 아니라 운세 재미 요소다. 시드로 결정적 선택만 한다.
+// 한국: 6자리 KRX 종목코드 + 시장. (목록은 모두 KOSPI 상장)
 const KR_STOCKS = [
-  { name: "삼성전자", code: "005930" },
-  { name: "SK하이닉스", code: "000660" },
-  { name: "LG에너지솔루션", code: "373220" },
-  { name: "삼성바이오로직스", code: "207940" },
-  { name: "현대차", code: "005380" },
-  { name: "기아", code: "000270" },
-  { name: "셀트리온", code: "068270" },
-  { name: "NAVER", code: "035420" },
-  { name: "카카오", code: "035720" },
-  { name: "POSCO홀딩스", code: "005490" },
-  { name: "KB금융", code: "105560" },
-  { name: "신한지주", code: "055550" },
-  { name: "현대모비스", code: "012330" },
-  { name: "LG화학", code: "051910" },
-  { name: "삼성SDI", code: "006400" },
-  { name: "삼성물산", code: "028260" },
-  { name: "SK텔레콤", code: "017670" },
-  { name: "크래프톤", code: "259960" },
-  { name: "하이브", code: "352820" },
-  { name: "한화에어로스페이스", code: "012450" },
-  { name: "KT&G", code: "033780" },
-  { name: "LG전자", code: "066570" },
-  { name: "삼성생명", code: "032830" },
-  { name: "우리금융지주", code: "316140" },
-  { name: "HMM", code: "011200" },
+  { name: "삼성전자", code: "005930", market: "KOSPI" },
+  { name: "SK하이닉스", code: "000660", market: "KOSPI" },
+  { name: "LG에너지솔루션", code: "373220", market: "KOSPI" },
+  { name: "삼성바이오로직스", code: "207940", market: "KOSPI" },
+  { name: "현대차", code: "005380", market: "KOSPI" },
+  { name: "기아", code: "000270", market: "KOSPI" },
+  { name: "셀트리온", code: "068270", market: "KOSPI" },
+  { name: "NAVER", code: "035420", market: "KOSPI" },
+  { name: "카카오", code: "035720", market: "KOSPI" },
+  { name: "POSCO홀딩스", code: "005490", market: "KOSPI" },
+  { name: "KB금융", code: "105560", market: "KOSPI" },
+  { name: "신한지주", code: "055550", market: "KOSPI" },
+  { name: "현대모비스", code: "012330", market: "KOSPI" },
+  { name: "LG화학", code: "051910", market: "KOSPI" },
+  { name: "삼성SDI", code: "006400", market: "KOSPI" },
+  { name: "삼성물산", code: "028260", market: "KOSPI" },
+  { name: "SK텔레콤", code: "017670", market: "KOSPI" },
+  { name: "크래프톤", code: "259960", market: "KOSPI" },
+  { name: "하이브", code: "352820", market: "KOSPI" },
+  { name: "한화에어로스페이스", code: "012450", market: "KOSPI" },
+  { name: "KT&G", code: "033780", market: "KOSPI" },
+  { name: "LG전자", code: "066570", market: "KOSPI" },
+  { name: "삼성생명", code: "032830", market: "KOSPI" },
+  { name: "우리금융지주", code: "316140", market: "KOSPI" },
+  { name: "HMM", code: "011200", market: "KOSPI" },
 ];
+// 미국: 티커 + 상장 거래소(NASDAQ/NYSE)
 const US_STOCKS = [
-  { name: "Apple", code: "AAPL" },
-  { name: "Microsoft", code: "MSFT" },
-  { name: "NVIDIA", code: "NVDA" },
-  { name: "Amazon", code: "AMZN" },
-  { name: "Alphabet (Google)", code: "GOOGL" },
-  { name: "Meta", code: "META" },
-  { name: "Tesla", code: "TSLA" },
-  { name: "Berkshire Hathaway", code: "BRK.B" },
-  { name: "Eli Lilly", code: "LLY" },
-  { name: "Visa", code: "V" },
-  { name: "JPMorgan Chase", code: "JPM" },
-  { name: "Coca-Cola", code: "KO" },
-  { name: "McDonald's", code: "MCD" },
-  { name: "Nike", code: "NKE" },
-  { name: "Starbucks", code: "SBUX" },
-  { name: "Walt Disney", code: "DIS" },
-  { name: "Netflix", code: "NFLX" },
-  { name: "AMD", code: "AMD" },
-  { name: "Costco", code: "COST" },
-  { name: "PepsiCo", code: "PEP" },
-  { name: "Mastercard", code: "MA" },
-  { name: "Johnson & Johnson", code: "JNJ" },
-  { name: "Procter & Gamble", code: "PG" },
-  { name: "Intel", code: "INTC" },
-  { name: "Boeing", code: "BA" },
+  { name: "Apple", code: "AAPL", market: "NASDAQ" },
+  { name: "Microsoft", code: "MSFT", market: "NASDAQ" },
+  { name: "NVIDIA", code: "NVDA", market: "NASDAQ" },
+  { name: "Amazon", code: "AMZN", market: "NASDAQ" },
+  { name: "Alphabet (Google)", code: "GOOGL", market: "NASDAQ" },
+  { name: "Meta", code: "META", market: "NASDAQ" },
+  { name: "Tesla", code: "TSLA", market: "NASDAQ" },
+  { name: "Berkshire Hathaway", code: "BRK.B", market: "NYSE" },
+  { name: "Eli Lilly", code: "LLY", market: "NYSE" },
+  { name: "Visa", code: "V", market: "NYSE" },
+  { name: "JPMorgan Chase", code: "JPM", market: "NYSE" },
+  { name: "Coca-Cola", code: "KO", market: "NYSE" },
+  { name: "McDonald's", code: "MCD", market: "NYSE" },
+  { name: "Nike", code: "NKE", market: "NYSE" },
+  { name: "Starbucks", code: "SBUX", market: "NASDAQ" },
+  { name: "Walt Disney", code: "DIS", market: "NYSE" },
+  { name: "Netflix", code: "NFLX", market: "NASDAQ" },
+  { name: "AMD", code: "AMD", market: "NASDAQ" },
+  { name: "Costco", code: "COST", market: "NASDAQ" },
+  { name: "PepsiCo", code: "PEP", market: "NASDAQ" },
+  { name: "Mastercard", code: "MA", market: "NYSE" },
+  { name: "Johnson & Johnson", code: "JNJ", market: "NYSE" },
+  { name: "Procter & Gamble", code: "PG", market: "NYSE" },
+  { name: "Intel", code: "INTC", market: "NASDAQ" },
+  { name: "Boeing", code: "BA", market: "NYSE" },
 ];
 
 // ── 생일이 같은 유명인 — 오프라인 폴백 목록 (월-일 기준) ──
@@ -737,8 +739,10 @@ function renderStocks(birth) {
   $("stocks").innerHTML =
     `<p class="stocks-title">📈 오늘의 행운 종목 <span class="stocks-note">재미로!</span></p>` +
     `<ul class="stock-list">` +
-    `<li><span class="flag">🇰🇷</span><strong>${esc(kr.name)}</strong><span class="ticker">${esc(kr.code)}</span></li>` +
-    `<li><span class="flag">🇺🇸</span><strong>${esc(us.name)}</strong><span class="ticker">${esc(us.code)}</span></li>` +
+    `<li><span class="flag">🇰🇷</span><strong>${esc(kr.name)}</strong>` +
+      `<span class="ticker"><b>${esc(kr.code)}</b> · ${esc(kr.market)}</span></li>` +
+    `<li><span class="flag">🇺🇸</span><strong>${esc(us.name)}</strong>` +
+      `<span class="ticker"><b>${esc(us.code)}</b> · ${esc(us.market)}</span></li>` +
     `</ul>` +
     `<p class="stocks-disc">※ 운세를 바탕으로 한 재미 요소예요. 투자 권유나 추천이 아니며, 투자 판단·책임은 본인에게 있습니다.</p>`;
 }

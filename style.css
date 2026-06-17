@@ -281,6 +281,12 @@ h1 {
   font-size: 0.8rem;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.stock-list .ticker b {
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 .stocks-disc {
   margin-top: 10px;

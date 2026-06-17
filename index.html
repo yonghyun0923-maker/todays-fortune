@@ -15,8 +15,21 @@
     <!-- 입력 화면 -->
     <section id="input-view">
       <p class="lead">생년월일을 넣으면 오늘의 운세를 봐드려요.</p>
-      <label for="birth" class="label">생년월일</label>
-      <input type="date" id="birth" class="birth-input" />
+      <label class="label">생년월일 (직접 입력)</label>
+      <div class="birth-inputs">
+        <input id="birth-year" class="birth-num birth-num-year" type="text"
+               inputmode="numeric" pattern="[0-9]*" maxlength="4"
+               placeholder="YYYY" aria-label="태어난 연도" />
+        <span class="birth-sep">년</span>
+        <input id="birth-month" class="birth-num" type="text"
+               inputmode="numeric" pattern="[0-9]*" maxlength="2"
+               placeholder="MM" aria-label="태어난 월" />
+        <span class="birth-sep">월</span>
+        <input id="birth-day" class="birth-num" type="text"
+               inputmode="numeric" pattern="[0-9]*" maxlength="2"
+               placeholder="DD" aria-label="태어난 일" />
+        <span class="birth-sep">일</span>
+      </div>
       <button id="see-btn" class="primary-btn">운세 보기</button>
       <p class="hint" id="hint"></p>
     </section>
@@ -42,6 +55,9 @@
         <li><span>행운의 아이템</span><strong id="lucky-item"></strong></li>
       </ul>
 
+      <!-- 오늘의 행운 종목 (재미 요소, script.js가 채워 넣음) -->
+      <div class="stocks" id="stocks"></div>
+
       <!-- 조심할 점 -->
       <p class="caution" id="caution"></p>
 
@@ -55,7 +71,7 @@
       <p class="hint" id="copy-hint"></p>
     </section>
 
-    <footer class="foot">광고 없이, 깔끔하게.</footer>
+    <footer class="foot">한푼만 줍쇼~</footer>
   </main>
 
   <script src="script.js"></script>

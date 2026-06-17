@@ -335,6 +335,63 @@ const CAUTIONS = [
   "서류나 숫자는 한 번 더 꼼꼼히 살펴보세요.",
 ];
 
+// ── 오늘의 행운 종목 (재미 요소) ──────────────────────
+// ⚠️ 투자 권유/추천이 아니라 운세 재미 요소다. 시드로 결정적 선택만 한다.
+const KR_STOCKS = [
+  { name: "삼성전자", code: "005930" },
+  { name: "SK하이닉스", code: "000660" },
+  { name: "LG에너지솔루션", code: "373220" },
+  { name: "삼성바이오로직스", code: "207940" },
+  { name: "현대차", code: "005380" },
+  { name: "기아", code: "000270" },
+  { name: "셀트리온", code: "068270" },
+  { name: "NAVER", code: "035420" },
+  { name: "카카오", code: "035720" },
+  { name: "POSCO홀딩스", code: "005490" },
+  { name: "KB금융", code: "105560" },
+  { name: "신한지주", code: "055550" },
+  { name: "현대모비스", code: "012330" },
+  { name: "LG화학", code: "051910" },
+  { name: "삼성SDI", code: "006400" },
+  { name: "삼성물산", code: "028260" },
+  { name: "SK텔레콤", code: "017670" },
+  { name: "크래프톤", code: "259960" },
+  { name: "하이브", code: "352820" },
+  { name: "한화에어로스페이스", code: "012450" },
+  { name: "KT&G", code: "033780" },
+  { name: "LG전자", code: "066570" },
+  { name: "삼성생명", code: "032830" },
+  { name: "우리금융지주", code: "316140" },
+  { name: "HMM", code: "011200" },
+];
+const US_STOCKS = [
+  { name: "Apple", code: "AAPL" },
+  { name: "Microsoft", code: "MSFT" },
+  { name: "NVIDIA", code: "NVDA" },
+  { name: "Amazon", code: "AMZN" },
+  { name: "Alphabet (Google)", code: "GOOGL" },
+  { name: "Meta", code: "META" },
+  { name: "Tesla", code: "TSLA" },
+  { name: "Berkshire Hathaway", code: "BRK.B" },
+  { name: "Eli Lilly", code: "LLY" },
+  { name: "Visa", code: "V" },
+  { name: "JPMorgan Chase", code: "JPM" },
+  { name: "Coca-Cola", code: "KO" },
+  { name: "McDonald's", code: "MCD" },
+  { name: "Nike", code: "NKE" },
+  { name: "Starbucks", code: "SBUX" },
+  { name: "Walt Disney", code: "DIS" },
+  { name: "Netflix", code: "NFLX" },
+  { name: "AMD", code: "AMD" },
+  { name: "Costco", code: "COST" },
+  { name: "PepsiCo", code: "PEP" },
+  { name: "Mastercard", code: "MA" },
+  { name: "Johnson & Johnson", code: "JNJ" },
+  { name: "Procter & Gamble", code: "PG" },
+  { name: "Intel", code: "INTC" },
+  { name: "Boeing", code: "BA" },
+];
+
 // ── 생일이 같은 유명인 — 오프라인 폴백 목록 (월-일 기준) ──
 // 기본은 위키백과 API로 불러오고(renderTwins), 인터넷이 안 되거나 API가
 // 실패할 때만 아래 손목록을 예비로 쓴다. (연도 무시, MM-DD로 매칭)
@@ -673,6 +730,19 @@ function renderTwinsFallback(box, birth) {
   }
 }
 
+// 오늘의 행운 종목(한국·미국 1개씩) — 재미 요소, 투자 권유 아님.
+function renderStocks(birth) {
+  const kr = pick(KR_STOCKS, birth, "krstock");
+  const us = pick(US_STOCKS, birth, "usstock");
+  $("stocks").innerHTML =
+    `<p class="stocks-title">📈 오늘의 행운 종목 <span class="stocks-note">재미로!</span></p>` +
+    `<ul class="stock-list">` +
+    `<li><span class="flag">🇰🇷</span><strong>${esc(kr.name)}</strong><span class="ticker">${esc(kr.code)}</span></li>` +
+    `<li><span class="flag">🇺🇸</span><strong>${esc(us.name)}</strong><span class="ticker">${esc(us.code)}</span></li>` +
+    `</ul>` +
+    `<p class="stocks-disc">※ 운세를 바탕으로 한 재미 요소예요. 투자 권유나 추천이 아니며, 투자 판단·책임은 본인에게 있습니다.</p>`;
+}
+
 function showResult(birth) {
   $("fortune").textContent = pick(FORTUNES, birth, "fortune");
   animateScore($("score"), pickNum(birth, "score", 50, 99)); // 50~99, 카운트업
@@ -684,6 +754,8 @@ function showResult(birth) {
   $("lucky-color").textContent = pick(COLORS, birth, "color");
   $("lucky-time").textContent = pick(LUCKY_TIMES, birth, "time");
   $("lucky-item").textContent = pick(LUCKY_ITEMS, birth, "item");
+
+  renderStocks(birth);
 
   $("caution").textContent = pick(CAUTIONS, birth, "caution");
 
@@ -704,17 +776,67 @@ function birthFromUrl() {
   return /^\d{4}-\d{2}-\d{2}$/.test(v || "") ? v : null;
 }
 
+// ── 생년월일 입력(직접 타이핑) 헬퍼 ──────────────────
+function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+
+// 세 칸(년/월/일)을 읽어 유효하면 "YYYY-MM-DD", 아니면 "" 를 돌려준다.
+function getBirth() {
+  const y = $("birth-year").value.trim();
+  const m = $("birth-month").value.trim();
+  const d = $("birth-day").value.trim();
+  if (!y || !m || !d) return "";
+
+  const yy = Number(y), mm = Number(m), dd = Number(d);
+  const nowY = new Date().getFullYear();
+  if (!(yy >= 1900 && yy <= nowY)) return "";
+  if (!(mm >= 1 && mm <= 12)) return "";
+  const lastDay = new Date(yy, mm, 0).getDate(); // 그 달의 마지막 날(윤년 반영)
+  if (!(dd >= 1 && dd <= lastDay)) return "";
+
+  const birth = `${yy}-${pad2(mm)}-${pad2(dd)}`;
+  if (birth > todayKey()) return ""; // 미래 생일 방지
+  return birth;
+}
+
+// 공유 링크로 들어왔을 때 세 칸을 채운다.
+function setBirth(value) {
+  const [y, m, d] = value.split("-");
+  $("birth-year").value = String(Number(y));
+  $("birth-month").value = String(Number(m));
+  $("birth-day").value = String(Number(d));
+}
+
+// 숫자만 입력 + 칸이 다 차면 다음 칸으로 자동 이동
+function wireDigitInput(el, maxLen, nextEl) {
+  el.addEventListener("input", () => {
+    el.value = el.value.replace(/\D/g, "").slice(0, maxLen);
+    $("hint").textContent = "";
+    if (el.value.length >= maxLen && nextEl) nextEl.focus();
+  });
+}
+
 // ── 초기화 ──────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
   $("today").textContent = `${todayKey()} 기준`;
 
-  // 입력 최대값을 오늘로 제한(미래 생일 방지)
-  $("birth").max = todayKey();
+  // 직접 입력 칸: 숫자만 + 자동 이동(년→월→일)
+  wireDigitInput($("birth-year"), 4, $("birth-month"));
+  wireDigitInput($("birth-month"), 2, $("birth-day"));
+  wireDigitInput($("birth-day"), 2, null);
 
   $("see-btn").addEventListener("click", () => {
-    const birth = $("birth").value;
+    const y = $("birth-year").value.trim();
+    const m = $("birth-month").value.trim();
+    const d = $("birth-day").value.trim();
+    if (!y || !m || !d) {
+      $("hint").textContent = "생년월일을 모두 입력해 주세요.";
+      return;
+    }
+    const birth = getBirth();
     if (!birth) {
-      $("hint").textContent = "생년월일을 먼저 넣어주세요.";
+      $("hint").textContent = "올바른 날짜인지 확인해 주세요. (예: 1990 / 5 / 16)";
       return;
     }
     showResult(birth);
@@ -724,7 +846,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 링크 복사: 내 생일을 담은 주소를 만들어 클립보드에 복사
   $("copy-btn").addEventListener("click", async () => {
-    const birth = $("birth").value || birthFromUrl();
+    const birth = getBirth() || birthFromUrl();
+    if (!birth) {
+      $("copy-hint").textContent = "먼저 생년월일을 입력해 주세요.";
+      return;
+    }
     const url = `${location.origin}${location.pathname}?birth=${birth}`;
     try {
       await navigator.clipboard.writeText(url);
@@ -738,7 +864,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 공유 링크로 들어온 경우 바로 결과 표시
   const shared = birthFromUrl();
   if (shared) {
-    $("birth").value = shared;
+    setBirth(shared);
     showResult(shared);
   }
 });

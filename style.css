@@ -60,14 +60,34 @@ h1 {
   margin-bottom: 6px;
 }
 
-.birth-input {
+/* 생년월일 직접 입력 칸 (년/월/일) */
+.birth-inputs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.birth-num {
   width: 100%;
-  padding: 12px 14px;
-  font-size: 1rem;
+  min-width: 0;
+  padding: 14px 8px;
+  font-size: 1.1rem; /* 16px 이상 → 모바일 자동 확대 방지 */
+  text-align: center;
   border: 1px solid #463a6e;
   border-radius: 12px;
   background: #20193a;
   color: var(--text);
+}
+.birth-num-year {
+  flex: 1.6; /* 연도 칸을 조금 더 넓게 */
+}
+.birth-num:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.birth-sep {
+  flex: none;
+  font-size: 0.9rem;
+  color: var(--muted);
 }
 
 .primary-btn {
@@ -211,6 +231,59 @@ h1 {
 .lucky strong {
   font-size: 1.1rem;
   color: var(--accent);
+}
+
+/* 오늘의 행운 종목 (재미 요소) */
+.stocks {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #20193a;
+  text-align: left;
+}
+.stocks-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.stocks-note {
+  margin-left: 4px;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--accent);
+}
+.stock-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.stock-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #2a2147;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.stock-list .flag {
+  font-size: 1rem;
+}
+.stock-list strong {
+  flex: 1;
+  font-size: 0.98rem;
+}
+.stock-list .ticker {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.stocks-disc {
+  margin-top: 10px;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--muted);
+  word-break: keep-all;
 }
 
 /* 조심할 점 — 살짝 경고 톤으로 구분 */
